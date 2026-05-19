@@ -70,12 +70,6 @@ Time getCurrentTime() {
     return current;
 }
 
-int daysDifference(Date d1, Date d2) {
-    if (d1.year != d2.year) return 365;
-    if (d1.month != d2.month) return 30;
-    return d2.day - d1.day;
-}
-
 bool isDateEqual(Date d1, Date d2) {
     return d1.day == d2.day && d1.month == d2.month && d1.year == d2.year;
 }
@@ -83,6 +77,12 @@ bool isDateEqual(Date d1, Date d2) {
 class Cinema {
 private:
     vector<Session> sessions;
+
+    int daysDifference(Date d1, Date d2) {
+        if (d1.year != d2.year) return 365;
+        if (d1.month != d2.month) return 30;
+        return d2.day - d1.day;
+    }
 
     double getPriceByTime(double basePrice, Time time) {
         if (time.hour < 12) {
@@ -448,6 +448,11 @@ int main() {
 
             cout << "Enter number of tickets: ";
             cin >> seatCount;
+
+            if (seatCount <= 0) {
+                cout << "Error. Number of tickets must be positive" << endl;
+                break;
+            }
 
             office.acceptOrder(date, time, filmName, hallNumber, isVip, seatCount);
             break;
