@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include <limits> 
 
 class NumberGenerator {
 private:
@@ -104,16 +105,27 @@ public:
 };
 
 class UserInterface {
+private: 
+    static void clearInputStream() { 
+        std::cin.clear(); 
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+    }
+
 public:
     static int getLength() {
         int n;
         do { 
             std::cout << "Enter the length of the desired number (1-10): ";
-            std::cin >> n;
+            if (!(std::cin >> n)) { 
+                std::cout << "Invalid input! Please enter a number.\n"; 
+                clearInputStream(); 
+                continue; 
+            }
             if (n < 1 || n > 10) {
                 std::cout << "The length should be between 1 and 10!\n";
             }
         } while (n < 1 || n > 10);
+        clearInputStream(); 
         return n;
     }
 
@@ -124,6 +136,7 @@ public:
             std::cin >> guess;
             if (!GameLogic::isValidInput(guess, length)) {
                 std::cout << "Incorrect input! Try again.\n";
+                clearInputStream(); 
             }
         } while (!GameLogic::isValidInput(guess, length));
         return guess;
